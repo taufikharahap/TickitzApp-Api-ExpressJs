@@ -6,3 +6,16 @@ CREATE TABLE public.genre (
 	CONSTRAINT genre_pk PRIMARY KEY (genre_id),
 	CONSTRAINT genre_un UNIQUE (genre_name)
 );
+
+INSERT INTO genre(genre_name)
+    VALUES
+        ('Adventure'),
+        ('Action'),
+        ('Fantasy'),
+        ('Comedy'),
+        ('Family'),
+        ('Drama'),
+        ('Sc-Fi'),
+        ('crime'),
+        ('Horror'),
+        ('Romance');

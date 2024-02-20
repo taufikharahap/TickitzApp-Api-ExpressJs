@@ -27,10 +27,6 @@ function respon(res, status, result = '') {
             desc = ''
     }
 
-    const isObject = (data) => {
-        return !!data && data.constructor === Object
-    }
-
     let results = {
         status: status,
         description: desc

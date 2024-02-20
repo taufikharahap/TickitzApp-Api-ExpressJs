@@ -12,7 +12,7 @@
     "express",
     "backend"
   ],
-  "author": "biFebriansyah",
+  "author": "taufikharahap",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

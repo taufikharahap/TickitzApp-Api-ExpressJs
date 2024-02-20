@@ -9,7 +9,7 @@ const genToken = (data) => {
         role: data
     }
 
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '1m' })
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '30m' })
 
     return token
 }
@@ -24,7 +24,7 @@ ctrl.login = async (req, res) => {
         const passUser = req.body.password
         const check = await bcrypt.compare(passUser, password)
         if (!check) {
-            return respone(res, 401, "passwrod salah")
+            return respone(res, 401, "password salah")
         }
 
         const tokenJwt = genToken(role)

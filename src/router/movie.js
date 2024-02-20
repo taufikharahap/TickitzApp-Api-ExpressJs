@@ -6,6 +6,7 @@ const upload = require('../middleware/upload')
 
 route.get('/', authCheck, ctrl.fetchBy)
 route.post('/', upload.single('image'), ctrl.save)
-route.patch('/:id', ctrl.patch)
+route.patch('/:id', upload.single('image'), ctrl.patch)
+route.delete('/:id', ctrl.deleteMovie)
 
 module.exports = route

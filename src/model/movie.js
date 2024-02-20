@@ -5,12 +5,12 @@ const model = {}
 
 model.getData = () => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT * FROM public.product ORDER BY id_product DESC')
+        db.query('SELECT * FROM public.movie ORDER BY release_date DESC')
             .then((res) => {
                 resolve(res.rows)
             })
-            .catch((er) => {
-                reject(er)
+            .catch((err) => {
+                reject(err)
             })
     })
 }
@@ -46,11 +46,9 @@ model.getBy = async ({ page, limit, orderBy, search }) => {
             SELECT 
                 mv.movie_id,
                 mv.movie_name,
-                mv.movie_banner,
+                mv.movie_poster,
                 mv.release_date,
-                string_agg(g.genre_name, ', ') AS genres,
-                mv.created_at, 
-                mv.updated_at
+                string_agg(g.genre_name, ', ') AS genres
             FROM public.movie mv
             JOIN public.movie_genre mg ON mg.movie_id = mv.movie_id
             JOIN public.genre g ON mg.genre_id = g.genre_id
@@ -64,8 +62,7 @@ model.getBy = async ({ page, limit, orderBy, search }) => {
             prev: page == 1 ? null : Number(page) - 1,
             total: count
         }
-
-        if (data.rows <= 0) {
+        if (data.rows.length <= 0) {
             return 'data not found'
         } else {
             data.rows.map((v) => {
@@ -79,16 +76,16 @@ model.getBy = async ({ page, limit, orderBy, search }) => {
     }
 }
 
-model.save = async ({ name, banner, release, genre }) => {
+model.save = async ({ movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis, genre }) => {
     const pg = await db.connect()
     try {
         await pg.query('BEGIN')
 
         const movie = await pg.query(
             `INSERT INTO public.movie
-                (movie_name, movie_banner, release_date)
-            VALUES($1, $2, $3) RETURNING movie_id`,
-            [name, banner, release]
+                (movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis)
+            VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING movie_id`,
+            [movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis]
         )
 
         if (genre && genre.length > 0) {
@@ -112,16 +109,16 @@ model.save = async ({ name, banner, release, genre }) => {
     }
 }
 
-model.update = async ({ name, banner, release, genre }, id) => {
+model.update = async ({ movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis, genre }, id) => {
+    const pg = await db.connect()
     try {
-        const pg = await db.connect()
         await pg.query('BEGIN')
 
         const movie = await pg.query(
             `UPDATE public.movie SET
-                movie_name=$1, movie_banner=$2, release_date=$3
-            WHERE movie_id=$4`,
-            [name, banner, release, id]
+                movie_name=$1, movie_poster=$2, release_date=$3, directed_by=$4, casts=$5, duration=$6, synopsis=$7 
+            WHERE movie_id=$8`,
+            [`${movie_name}`, `${movie_poster}`, `${release_date}`, `${directed_by}`, casts, `${duration}`, `${synopsis}`, id]
         )
 
         if (genre.length > 0) {
@@ -131,8 +128,8 @@ model.update = async ({ name, banner, release, genre }, id) => {
                         `
                     UPDATE public.movie_genre SET
                         genre_id = $1
-                    WHERE movie_genre = $2`,
-                        [v.id, v.movie_genre]
+                    WHERE movie_id= $2`,
+                        [v, id]
                     )
                     .catch((err) => {
                         console.log(err)
@@ -146,6 +143,42 @@ model.update = async ({ name, banner, release, genre }, id) => {
         await pg.query('ROLLBACK')
         throw error
     }
+}
+
+model.getPosterById = (id) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT movie_poster FROM public.movie WHERE movie_id=$1`, [id])
+            .then((res) => {
+                resolve(res.rows[0].movie_poster)
+            })
+            .catch((err) => {
+                reject(err)
+            })
+    })
+}
+
+model.getIdMovie = (id) => {
+    return new Promise((resolve, reject) => {
+        db.query(`select * from public.movie
+                    where movie_id= $1`, [id])
+        .then((res) => {
+            resolve(res)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
+
+model.deleteMovie = (id) => {
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM movie 
+        WHERE movie_id = $1`, [id])
+        .then((res) => {
+            resolve(`${res.rowCount} movie berhasi dihapus`)
+        }).catch(err => {
+            reject(err)
+        })
+    })
 }
 
 module.exports = model

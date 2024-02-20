@@ -6,3 +6,13 @@ CREATE TABLE public.movie_genre (
 	CONSTRAINT movie_genre_fk FOREIGN KEY (movie_id) REFERENCES public.movie(movie_id) ON DELETE CASCADE,
 	CONSTRAINT movie_genre_fk_1 FOREIGN KEY (genre_id) REFERENCES public.genre(genre_id) ON DELETE CASCADE
 );
+
+insert into public.movie_genre(movie_id, genre_id)
+	values
+	(1, 1),
+	(1, 2),
+	(2, 5),
+	(3, 1),
+	(4, 3),
+	(5, 5),
+	(6, 6);

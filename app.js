@@ -17,14 +17,14 @@ const corsOptions = {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors(corsOptions))
-app.use("/image", express.static('./public/upload'))
+app.use(cors())
+app.use("/image", express.static('./public/image/poster'))
 app.use(routers)
 
 db.connect()
     .then(() => {
-        app.listen(8000, () => {
-            console.log('app running on port 8000')
+        app.listen(8001, () => {
+            console.log('app running on port 8001')
         })
     })
     .catch((e) => {

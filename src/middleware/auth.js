@@ -3,6 +3,7 @@ const respone = require('../utils/respon')
 
 
 module.exports = (req, res, next) => {
+    console.log(req.baseUrl)
     const { authorization } = req.headers
     if (!authorization) {
         return respone(res, 401, "silahkan login")
@@ -14,7 +15,7 @@ module.exports = (req, res, next) => {
             return respone(res, 401, err)
         }
 
-        if (decode.role == "admin") {
+        if (decode.role == "user") {
             next()
         } else {
             return respone(res, 401, "invalid role")

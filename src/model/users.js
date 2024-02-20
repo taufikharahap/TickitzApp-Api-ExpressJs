@@ -20,10 +20,11 @@ model.getData = () => {
 
 model.getPassword = (username) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT "password", role FROM public.users WHERE username = $1', [username])
+        db.query('SELECT "password", "role" FROM public.users WHERE username = $1', [username])
             .then((res) => {
                 if (res.rows.length) {
                     resolve(res.rows[0])
+                    console.log(res.rows)
                 } else {
                     resolve(false)
                 }
@@ -52,7 +53,7 @@ model.dataExists = (username) => {
 
 model.getByUser = (username) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT user_id, fullname, username, email, "role" FROM public.users WHERE username = $1', [username])
+        db.query('SELECT user_id, first_name, username, email_user, "role" FROM public.users WHERE username = $1', [username])
             .then((res) => {
                 resolve(res.rows)
             })
@@ -62,14 +63,14 @@ model.getByUser = (username) => {
     })
 }
 
-model.saveData = ({ fullname, username, password, email }) => {
+model.saveData = ({ first_name, last_name, username, email_user, password, role, about_me, phone_number }) => {
     return new Promise((resolve, reject) => {
         db.query(
             `INSERT INTO public.users
-            (fullname, username, "password", email)
-            VALUES($1, $2, $3, $4);            
+            (first_name, last_name, username, email_user, "password", "role", about_me, phone_number)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8);            
         `,
-            [fullname, username, password, email]
+            [first_name, last_name, username, email_user, password, role, about_me, phone_number]
         )
             .then((res) => {
                 resolve(`${res.rowCount} user created`)

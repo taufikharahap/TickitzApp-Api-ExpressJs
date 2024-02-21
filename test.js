@@ -1,9 +1,10 @@
-const fs = require('fs')
+const a = (admin= "", user= "user")=>{
+    console.log(admin)
+    console.log(user)
+}
 
 
-const a = fs.readdirSync('public/image/poster')
 
-const b = a.indexOf('2024-02-20T11-28-37.244Z_avatar-limited-ed-couple-i7199.jpg');
+const accessUser = 'decode.role' != 'user' ? true : false;
 
-console.log(a)
-console.log(b)
+console.log(accessUser)

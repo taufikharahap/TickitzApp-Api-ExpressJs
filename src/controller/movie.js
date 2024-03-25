@@ -4,9 +4,10 @@ const model = require('../model/movie')
 const respon = require('../utils/respon')
 const respone = require('../utils/respon')
 
-ctrl.fetchData = async (req, res) => {
+ctrl.fetchDataById = async (req, res) => {
+    const id = parseInt(req.params.id)
     try {
-        const result = await model.getData()
+        const result = await model.getMoviebyId(id)
         return respone(res, 200, result)
     } catch (error) {
         return respone(res, 500, error.message)
@@ -22,6 +23,21 @@ ctrl.fetchBy = async (req, res) => {
             search: req.query.search
         }
         const result = await model.getBy(params)
+        return respone(res, 200, result)
+    } catch (error) {
+        return respone(res, 500, error.message)
+    }
+}
+
+ctrl.fetchMovieBy = async (req, res) => {
+    try {
+        const params = {
+            page: req.query.page || 1,
+            limit: req.query.limit || 5,
+            orderBy: req.query.orderBy || 'movie_name',
+            name: req.query.name
+        }
+        const result = await model.getMovieBy(params)
         return respone(res, 200, result)
     } catch (error) {
         return respone(res, 500, error.message)
@@ -45,9 +61,8 @@ ctrl.save = async (req, res) => {
 ctrl.patch = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const checkMovieId = await model.getIdMovie(id);
-        
-        if(!checkMovieId.rowCount){
+        const checkMovieId = await model.getMovieId(id);
+        if(!checkMovieId){
             const imageDir = fs.readdirSync('public/image/poster')
             const findImage = imageDir.indexOf(req.file.filename)
             if(findImage > -1 ){
@@ -83,9 +98,9 @@ ctrl.patch = async (req, res) => {
 ctrl.deleteMovie = async (req, res) => {
     try {
         const id = parseInt(req.params.id);
-        const checkMovieId = await model.getIdMovie(id);
+        const checkMovieId = await model.getMovieId(id);
         
-        if(!checkMovieId.rowCount){            
+        if(!checkMovieId){            
             return respone(res, 500, `id movie tidak ada`);
         }
 

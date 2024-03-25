@@ -18,4 +18,5 @@ INSERT INTO genre(genre_name)
         ('Sc-Fi'),
         ('crime'),
         ('Horror'),
-        ('Romance');
+        ('Romance'),
+        ('Thriller');

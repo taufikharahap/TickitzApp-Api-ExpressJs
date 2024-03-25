@@ -18,13 +18,12 @@ model.getData = () => {
     })
 }
 
-model.getPassword = (username) => {
+model.getPassword = (email_user) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT "password", "role" FROM public.users WHERE username = $1', [username])
+        db.query('SELECT "password", "role" FROM public.users WHERE email_user = $1', [email_user])
             .then((res) => {
                 if (res.rows.length) {
                     resolve(res.rows[0])
-                    console.log(res.rows)
                 } else {
                     resolve(false)
                 }
@@ -35,9 +34,9 @@ model.getPassword = (username) => {
     })
 }
 
-model.dataExists = (username) => {
+model.dataExists = (email_user) => {
     return new Promise((resolve, reject) => {
-        db.query('SELECT user_id FROM public.users WHERE username = $1', [username])
+        db.query('SELECT user_id FROM public.users WHERE email_user = $1', [email_user])
             .then((res) => {
                 if (res.rows.length) {
                     resolve(true)

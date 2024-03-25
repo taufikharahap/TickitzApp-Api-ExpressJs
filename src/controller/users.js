@@ -15,6 +15,11 @@ ctrl.fetchData = async (req, res) => {
 // TODO need add data user
 ctrl.save = async (req, res) => {
     try {
+        const checkEmail = await model.dataExists(req.body.email_user);
+        if (checkEmail) {
+            return respone(res, 500, `Email sudah terdaftar`);
+        }
+        
         req.body.password = await hashing(req.body.password)
         const result = await model.saveData(req.body)
         return respone(res, 200, result)

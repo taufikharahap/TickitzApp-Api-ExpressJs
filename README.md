@@ -7,7 +7,7 @@
 1. Clone the repository
 
 ```bash
-git clone https://github.com/taufikharahap/FWG19.Backend-CRUD-Express.git
+https://github.com/taufikharahap/TickitzApp-Api-ExpressJs.git
 ```
 
 2. Install dependencies

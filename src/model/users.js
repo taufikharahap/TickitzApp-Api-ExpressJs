@@ -62,15 +62,10 @@ model.getByUser = (username) => {
     })
 }
 
-model.saveData = ({ first_name, last_name, username, email_user, password, role, about_me, phone_number }) => {
+model.saveData = ({ email_user, password}) => {
     return new Promise((resolve, reject) => {
-        db.query(
-            `INSERT INTO public.users
-            (first_name, last_name, username, email_user, "password", "role", about_me, phone_number)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8);            
-        `,
-            [first_name, last_name, username, email_user, password, role, about_me, phone_number]
-        )
+        db.query(`INSERT INTO public.users (email_user, "password")
+                    VALUES($1, $2)`, [email_user, password])
             .then((res) => {
                 resolve(`${res.rowCount} user created`)
             })

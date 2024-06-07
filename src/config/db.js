@@ -1,5 +1,5 @@
 const { Pool } = require('pg')
-//user postgres db postgres pass 12345
+//user mydb db postgres pass 12345
 const pool = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,

@@ -6,7 +6,9 @@ CREATE TABLE public.users (
     email_user VARCHAR NOT NULL,
 	"password" varchar NOT NULL,
 	"role" varchar NULL DEFAULT 'user',
-    about_me TEXT,
+    title TEXT DEFAULT 'Moviegoers',
+    points int DEFAULT 0,
+    photo_url VARCHAR DEFAULT '',
     phone_number VARCHAR(20) NULL,
 	created_at timestamp without time zone NULL DEFAULT now(),
 	updated_at timestamp without time zone NULL

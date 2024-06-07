@@ -77,17 +77,24 @@ model.getBy = async ({ page, limit, orderBy, search }) => {
     }
 }
 
-model.getMovieBy = async ({ page, limit, orderBy, name }) => {
+model.getMovieBy = async ({ page, limit, orderBy, name, genre }) => {
     try {
         let filterQuery = ''
         let orderQuery = ''
         let metaQuery = ''
         let count = 0
-        let searchName = name
 
 
-        if (name) {
-            filterQuery += name ? `and mv.movie_name like '%${searchName}%'` : ''
+        if (name && genre) {
+            filterQuery += name && genre ? `and mv.movie_name ILIKE '%${name}%' and genre_name ILIKE '%${genre}%'` : ''
+        }
+
+        if (name && !genre) {
+            filterQuery += name && !genre ? `and mv.movie_name ILIKE '%${name}%'` : ''
+        }
+        
+        if (!name && genre) {
+            filterQuery += !name && genre ? `and genre_name ILIKE '%${genre}%'` : ''
         }
 
         if (orderBy) {
@@ -100,10 +107,14 @@ model.getMovieBy = async ({ page, limit, orderBy, name }) => {
         }
 
         db.query(
-            `SELECT COUNT(mv.movie_id) as "count" FROM public.movie mv WHERE true ${filterQuery}`
+            `SELECT COUNT(mv.movie_id) as "count"
+            FROM public.movie mv
+            JOIN public.movie_genre mg ON mg.movie_id = mv.movie_id
+            JOIN public.genre g ON mg.genre_id = g.genre_id
+            WHERE true ${filterQuery} GROUP BY mv.movie_id`
         ).then((v) => {
-            count = v.rows[0].count
-            console.log(v.rows[0].count)
+            count = v.rows.length
+            console.log(v.rows.length)
         })
 
         const data = await db.query(`
@@ -113,7 +124,7 @@ model.getMovieBy = async ({ page, limit, orderBy, name }) => {
                     mv.movie_poster,
                     mv.release_date,
                     mv.duration,
-                    string_agg(g.genre_name, ', ') AS genres
+                    string_agg(genre_name, ', ') AS genres
                 FROM public.movie mv
                 JOIN public.movie_genre mg ON mg.movie_id = mv.movie_id
                 JOIN public.genre g ON mg.genre_id = g.genre_id
@@ -173,7 +184,7 @@ model.save = async ({ movie_name, movie_poster, release_date, directed_by, casts
 
         const movie = await pg.query(
             `INSERT INTO public.movie
-                (movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis)
+            (movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis)
             VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING movie_id`,
             [movie_name, movie_poster, release_date, directed_by, casts, duration, synopsis]
         )
@@ -182,8 +193,7 @@ model.save = async ({ movie_name, movie_poster, release_date, directed_by, casts
             for await (const v of genre) {
                 await pg.query(
                     `
-                    INSERT INTO public.movie_genre
-                        (movie_id, genre_id)
+                    INSERT INTO public.movie_genre (movie_id, genre_id) 
                     VALUES($1, $2)`,
                     [movie.rows[0].movie_id, v]
                 );

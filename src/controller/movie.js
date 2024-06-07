@@ -19,7 +19,7 @@ ctrl.fetchBy = async (req, res) => {
         const params = {
             page: req.query.page || 1,
             limit: req.query.limit || 5,
-            orderBy: req.query.orderBy || 'movie_name',
+            orderBy: req.query.orderBy || 'mv.movie_name',
             search: req.query.search
         }
         const result = await model.getBy(params)
@@ -34,8 +34,9 @@ ctrl.fetchMovieBy = async (req, res) => {
         const params = {
             page: req.query.page || 1,
             limit: req.query.limit || 5,
-            orderBy: req.query.orderBy || 'movie_name',
-            name: req.query.name
+            orderBy: req.query.orderBy || 'mv.movie_name',
+            name: req.query.name,
+            genre: req.query.genre
         }
         const result = await model.getMovieBy(params)
         return respone(res, 200, result)

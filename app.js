@@ -18,7 +18,7 @@ const corsOptions = {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
-app.use("/image", express.static('./public/image/poster'))
+app.use("/image", express.static('./public/image/'))
 app.use(routers)
 
 db.connect()

@@ -16,7 +16,7 @@ const genToken = (data) => {
 
 ctrl.login = async (req, res) => {
     try {
-        const { password, role } = await model.getPassword(req.body.email_user)
+        const { user_id, password, role } = await model.getPassword(req.body.email_user)
         if (!password) {
             return respone(res, 401, "email tidak terdaftar")
         }
@@ -28,7 +28,7 @@ ctrl.login = async (req, res) => {
         }
 
         const tokenJwt = genToken(role)
-        return respone(res, 200, { token: tokenJwt, role: role })
+        return respone(res, 200, {user_id: user_id, token: tokenJwt, role: role })
     } catch (error) {
         console.log(error);
         return respone(res, 500, error.message)

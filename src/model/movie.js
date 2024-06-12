@@ -114,7 +114,6 @@ model.getMovieBy = async ({ page, limit, orderBy, name, genre }) => {
             WHERE true ${filterQuery} GROUP BY mv.movie_id`
         ).then((v) => {
             count = v.rows.length
-            console.log(v.rows.length)
         })
 
         const data = await db.query(`

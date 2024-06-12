@@ -49,7 +49,7 @@ ctrl.save = async (req, res) => {
     try {
 
         if (req.file !== undefined) {
-            req.body.movie_poster = `http://localhost:8001/image/${req.file.filename}`
+            req.body.movie_poster = `http://localhost:8001/image/poster/${req.file.filename}`
         }
 
         const result = await model.save(req.body)

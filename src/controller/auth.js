@@ -9,16 +9,16 @@ const genToken = (data) => {
         role: data
     }
 
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '30m' })
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '5h' })
 
     return token
 }
 
 ctrl.login = async (req, res) => {
     try {
-        const { password, role } = await model.getPassword(req.body.username)
+        const { user_id, password, role } = await model.getPassword(req.body.email_user)
         if (!password) {
-            return respone(res, 401, "username tidak terdaftar")
+            return respone(res, 401, "email tidak terdaftar")
         }
 
         const passUser = req.body.password
@@ -28,7 +28,7 @@ ctrl.login = async (req, res) => {
         }
 
         const tokenJwt = genToken(role)
-        return respone(res, 200, { token: tokenJwt })
+        return respone(res, 200, {user_id: user_id, token: tokenJwt, role: role })
     } catch (error) {
         console.log(error);
         return respone(res, 500, error.message)

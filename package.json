@@ -17,7 +17,8 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.1",
+    "db-migrate": "^0.11.14",
+    "db-migrate-pg": "^1.5.2",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
@@ -26,6 +27,8 @@
     "pg-format": "^1.0.4"
   },
   "devDependencies": {
-    "eslint": "^8.56.0"
+    "dotenv": "^16.4.5",
+    "eslint": "^8.56.0",
+    "nodemon": "^3.1.3"
   }
 }

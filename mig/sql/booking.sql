@@ -8,7 +8,7 @@ CREATE TABLE booking (
     seat TEXT[] NOT NULL,
     amount INT NOT NULL,
     payment_method payment_method NOT NULL,
-    order_date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    order_date TIMESTAMP without time zone NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (schedule_id)
         REFERENCES public.schedule(schedule_id)
         ON DELETE CASCADE ON UPDATE CASCADE,

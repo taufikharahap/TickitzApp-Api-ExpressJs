@@ -1,0 +1,27 @@
+services:
+    postgres:
+        container_name: postgres
+        image: postgres
+        ports:
+            - '5433:5432'
+        environment:
+            - POSTGRES_PASSWORD=taufikdb
+            - POSTGRES_DB=taufik_tickitz_db
+            - POSTGRES_USER=taufikdb
+        networks:
+            - coffeenet
+
+    backend-express:
+        container_name: taufik-express
+        image: taufikharahap/tickitz-app:2
+        ports:
+            - '8002:8001'
+        environment:
+            - DB_HOST=postgres
+        networks:
+            - coffeenet
+
+networks:
+    coffeenet:
+          name: 'devnet'
+          external: true

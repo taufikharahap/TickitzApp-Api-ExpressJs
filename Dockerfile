@@ -1,6 +1,8 @@
 # Define the base image
 FROM node:20.14.0-alpine3.20 AS builder
 
+RUN mkdir -p /app
+
 # Set working directory
 WORKDIR /app
 
@@ -8,21 +10,10 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm cache clean --force && rm -rf node_modules && npm install
 
 # Copy your application code
 COPY . .
-
-# Define the serving image (optional)
-FROM node:20.14.0-alpine3.20 AS runner
-
-# Set working directory
-WORKDIR /app
-
-# Copy your application code
-COPY . .
-
-ENV PATH="/app:${PATH}"
 
 # Expose port (adjust if your app listens on a different port)
 EXPOSE 8001

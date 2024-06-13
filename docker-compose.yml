@@ -5,19 +5,26 @@ services:
         ports:
             - '5433:5432'
         environment:
-            - POSTGRES_PASSWORD=taufikdb
-            - POSTGRES_DB=taufik_tickitz_db
-            - POSTGRES_USER=taufikdb
+            - POSTGRES_PASSWORD=12345
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=mydb
         networks:
             - coffeenet
 
     backend-express:
-        container_name: taufik-express
-        image: taufikharahap/tickitz-app:2
+        container_name: taufik-tickitz
+        image: taufikharahap/tickitz-app:1
         ports:
             - '8002:8001'
+        # command: sh -c "npm install -g nodemon && npm install -g dotenv && npm start"
         environment:
-            - DB_HOST=postgres
+            - DB_HOST=postgres-express
+            - DB_USER=postgres
+            - DB_NAME=postgres
+            - DB_PASSWORD=postgres
+        volumes:
+            - ./:/app
+            - /app/node_modules
         networks:
             - coffeenet
 

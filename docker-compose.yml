@@ -1,7 +1,7 @@
 services:
     backend-express:
         container_name: taufik-tickitz
-        image: taufikharahap/tickitz-app:2
+        image: taufikharahap/tickitz-app:3
         ports:
             - '8002:8001'
         environment:

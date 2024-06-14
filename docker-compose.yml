@@ -1,34 +1,19 @@
 services:
-    postgres:
-        container_name: postgres
-        image: postgres
-        ports:
-            - '5433:5432'
-        environment:
-            - POSTGRES_PASSWORD=12345
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=mydb
-        networks:
-            - coffeenet
-
     backend-express:
         container_name: taufik-tickitz
-        image: taufikharahap/tickitz-app:1
+        image: taufikharahap/tickitz-app:3
         ports:
             - '8002:8001'
-        # command: sh -c "npm install -g nodemon && npm install -g dotenv && npm start"
         environment:
-            - DB_HOST=postgres-express
-            - DB_USER=postgres
-            - DB_NAME=postgres
-            - DB_PASSWORD=postgres
-        volumes:
-            - ./:/app
-            - /app/node_modules
+            - DB_HOST=postgres
+            - DB_USER=taufik
+            - DB_NAME=taufik_db
+            - DB_PASSWORD=taufik
+            - DB_PORT=5432
         networks:
-            - coffeenet
+            - gonet
 
 networks:
-    coffeenet:
-          name: 'devnet'
-          external: true
+    gonet:
+        name: golang
+        external: true

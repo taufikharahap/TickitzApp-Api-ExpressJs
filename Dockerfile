@@ -1,22 +1,14 @@
-# Define the base image
-FROM node:20.14.0-alpine3.20 AS builder
-
+FROM cgr.dev/chainguard/node:latest-dev AS build
 RUN mkdir -p /app
-
-# Set working directory
 WORKDIR /app
+COPY . /app
+USER root
+RUN rm -rf node_modules && npm install
 
-# Copy package.json and package-lock.json (or yarn.lock)
-COPY package*.json ./
-
-# Install dependencies
-RUN npm cache clean --force && rm -rf node_modules && npm install
-
-# Copy your application code
-COPY . .
-
-# Expose port (adjust if your app listens on a different port)
-EXPOSE 8001
-
-# Start command
-CMD [ "npm", "start" ]
+FROM cgr.dev/chainguard/node:latest
+COPY --from=build /app /usr/src/app
+WORKDIR /usr/src/app
+# sesuakan dengan port yang dipakai
+EXPOSE 8001 
+# sesuaikan dngan nama entry pointnya
+CMD ["app.js"]

@@ -1,0 +1,6 @@
+DB_USER='mydb'
+DB_HOST='localhost'
+DB_NAME='postgres'
+DB_PASSWORD=12345
+
+JWT_KEY='12345aja'

@@ -1,5 +1,6 @@
 const { Pool } = require('pg')
 //user mydb db postgres pass 12345
+
 const pool = new Pool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -11,6 +12,10 @@ const pool = new Pool({
     idleTimeoutMillis: 8000,
     connectionTimeoutMillis: 8000,
 
+})
+
+pool.on("error", (err, cl) => {
+    console.log(`Error received on db pool: ${err.message} n\ ${err.stack}`)
 })
 
 module.exports = pool

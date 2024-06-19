@@ -1,11 +1,14 @@
 services:
     backend-express:
         container_name: taufik-tickitz
-        image: taufikharahap/tickitz-app:3
+        image: taufikharahap/tickitz-app:2
+        restart: unless-stopped
         ports:
             - '8002:8001'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
         environment:
-            - DB_HOST=postgres
+            - DB_HOST=host.docker.internal
             - DB_USER=taufik
             - DB_NAME=taufik_db
             - DB_PASSWORD=taufik

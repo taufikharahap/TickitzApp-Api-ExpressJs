@@ -9,7 +9,7 @@ db.connect(async (err, client, done) => {
     }
 
     try {
-        await genre()
+        // await genre()
         await movie()
 
         console.log(`seed table success`)

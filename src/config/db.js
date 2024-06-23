@@ -11,7 +11,7 @@ const pool = new Pool({
     min: 0,
     idleTimeoutMillis: 8000,
     connectionTimeoutMillis: 8000,
-
+    ssl:true,
 })
 
 pool.on("error", (err, cl) => {

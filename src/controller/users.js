@@ -58,7 +58,7 @@ ctrl.upadateUser = async (req, res) => {
         const getUrlPhotoPath = await model.getPhotoUrlById(id);
 
         if(getUrlPhotoPath !== '' && getUrlPhotoPath !== null){
-            const lastPosterName = getUrlPhotoPath.replace('http://localhost:8001/image/', '')
+            const lastPosterName = getUrlPhotoPath.replace('https://taufikharahap.cloud/image/', '')
             const imageDir = fs.readdirSync('public/image/poster')
             const findImage = imageDir.indexOf(lastPosterName)
 
@@ -68,7 +68,7 @@ ctrl.upadateUser = async (req, res) => {
         }
 
         if (req.file !== undefined) {
-            req.body.photo_url = `http://localhost:8001/image/user/${req.file.filename}`
+            req.body.photo_url = `https://taufikharahap.cloud/image/user/${req.file.filename}`
         }
 
         

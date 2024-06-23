@@ -49,7 +49,7 @@ ctrl.save = async (req, res) => {
     try {
 
         if (req.file !== undefined) {
-            req.body.movie_poster = `http://localhost:8001/image/poster/${req.file.filename}`
+            req.body.movie_poster = `https://taufikharahap.cloud/image/poster/${req.file.filename}`
         }
 
         const result = await model.save(req.body)
@@ -75,8 +75,8 @@ ctrl.patch = async (req, res) => {
         
         const getPosterPath = await model.getPosterById(id);
 
-        if(getPosterPath !== null && getPosterPath.indexOf('http://localhost:8001/image/') > -1){
-            const lastPosterName = getPosterPath.replace('http://localhost:8001/image/', '')
+        if(getPosterPath !== null && getPosterPath.indexOf('https://taufikharahap.cloud/image/') > -1){
+            const lastPosterName = getPosterPath.replace('https://taufikharahap.cloud/image/', '')
             const imageDir = fs.readdirSync('public/image/poster')
             const findImage = imageDir.indexOf(lastPosterName)
 
@@ -86,7 +86,7 @@ ctrl.patch = async (req, res) => {
         }
 
         if (req.file !== undefined) {
-            req.body.movie_poster = `http://localhost:8001/image/${req.file.filename}`
+            req.body.movie_poster = `https://taufikharahap.cloud/image/${req.file.filename}`
         }
 
         const result = await model.update(req.body, req.params.id)
@@ -107,8 +107,8 @@ ctrl.deleteMovie = async (req, res) => {
 
         const getPosterPath = await model.getPosterById(id);
         
-        if(getPosterPath !== null && getPosterPath.indexOf('http://localhost:8001/image/') > -1){
-            const posterName = await getPosterPath.replace('http://localhost:8001/image/', '')
+        if(getPosterPath !== null && getPosterPath.indexOf('https://taufikharahap.cloud/image/') > -1){
+            const posterName = await getPosterPath.replace('https://taufikharahap.cloud/image/', '')
             const imageDir = await fs.readdirSync('public/image/poster')
             const findImage = await imageDir.indexOf(posterName)
             
